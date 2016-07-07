@@ -7,7 +7,9 @@ Personal Algorithm Practice Repo
 	
 	> testClass.html : 
 	>> test class.js
+	
 	> BinaryTreeWithMyClass.html : 
 	>> us my own class.js to implement a BinaryTree
+	
 	> implemented method:
 	>> getPreOrder,getInOrder,getPostOrder,getLevelOrder,getLeafSum,getHeight,swap,isInTree,getNearestCommonFather
