@@ -1,0 +1,105 @@
+<script src="class.js"></script>
+<script>
+
+Class("Person",function (obj){
+	obj.name ? this.name = obj.name : obj.name ;
+},{
+	"name":"Unnamed",
+	"gender":"Male",
+	"sayHello":function(){
+		console.log(this.name + ":Hello");
+	}
+});
+
+Class("PersonWithAge",function(obj){
+	obj.age ? this.age = obj.age : obj.age;
+},{
+	"age":"1",
+	"sayGoodbye":function(){
+		console.log(this.name + ":Goodbye");
+	}
+},Person);
+
+Class("PersonMaria",function(obj){
+	// obj.age ? this.age = obj.age : obj.age;
+},{
+	"name":"Maria",
+	"sayGoodbye":function(){
+		console.log(this.name + ":Goodbye");
+	}
+},Person);
+
+Class("PersonMariaWithAge",function(obj){
+	obj.age ? this.age = obj.age : obj.age;
+},{
+	"name":"Maria",
+	"age":"1",
+	"sayGoodbye":function(){
+		console.log(this.name + ":Goodbye");
+	}
+},Person);
+
+var jack = new Person({"name":"Jack"});
+
+var potterWithAge = new PersonWithAge({"name":"Potter","age":"18"});
+
+var maria = new PersonMaria();
+
+var mariaWithAge = new PersonMariaWithAge({"age":"16"});
+
+console.log(jack);
+//console.log(jack.constructor);
+console.log(jack instanceof Person);
+console.log(potterWithAge);
+//console.log(potterWithAge.constructor);
+console.log(potterWithAge instanceof Person);
+console.log(potterWithAge instanceof PersonWithAge);
+console.log(maria);
+//console.log(maria.constructor);
+console.log(maria instanceof Person);
+console.log(maria instanceof PersonMaria);
+console.log(mariaWithAge);
+//console.log(mariaWithAge.constructor);
+console.log(mariaWithAge instanceof Person);
+console.log(mariaWithAge instanceof PersonMariaWithAge);
+
+Class("PersonWithAgeAndHeight",function(obj){
+	obj.height ? this.height = obj.height : obj.height;
+},{
+	"height":"180",
+	"sayHeight":function(){
+		console.log(this.name + ":Height is " + this.height);
+	}
+},PersonWithAge);
+
+var johnWithAgeAndHeight = new PersonWithAgeAndHeight({"name":"John","height":"160"});
+
+console.log(johnWithAgeAndHeight);
+console.log(johnWithAgeAndHeight instanceof Person);
+console.log(johnWithAgeAndHeight instanceof PersonWithAge);
+console.log(johnWithAgeAndHeight instanceof PersonWithAgeAndHeight);
+
+function getInfo(obj){var str = "<br>{<br>";for(key in obj) {str += "&nbsp;&nbsp;" + key + ':"' + obj[key] + '",<br>'};str.slice(0,-5);str+="}";return str;}
+
+document.write(getInfo(jack) + "<br>");
+//console.log(jack.constructor);
+document.write("jack instanceof Person&nbsp;:&nbsp;" + (jack instanceof Person) + "<br>");
+document.write(getInfo(potterWithAge) + "<br>");
+//console.log(potterWithAge.constructor);
+document.write("potterWithAge instanceof Person&nbsp;:&nbsp;" + (potterWithAge instanceof Person) + "<br>");
+document.write("potterWithAge instanceof PersonWithAge&nbsp;:&nbsp;" + (potterWithAge instanceof PersonWithAge) + "<br>");
+document.write(getInfo(maria) + "<br>");
+//console.log(maria.constructor);
+document.write("maria instanceof Person&nbsp;:&nbsp;" + (maria instanceof Person) + "<br>");
+document.write("maria instanceof PersonMaria&nbsp;:&nbsp;" + (maria instanceof PersonMaria) + "<br>");
+document.write(getInfo(mariaWithAge) + "<br>");
+//console.log(mariaWithAge.constructor);
+document.write("mariaWithAge instanceof Person&nbsp;:&nbsp;" + (mariaWithAge instanceof Person) + "<br>");
+document.write("mariaWithAge instanceof PersonMariaWithAge&nbsp;:&nbsp;" + (mariaWithAge instanceof PersonMariaWithAge) + "<br>");
+document.write(getInfo(johnWithAgeAndHeight) + "<br>");
+document.write("johnWithAgeAndHeight instanceof Person&nbsp;:&nbsp;" + (johnWithAgeAndHeight instanceof Person) + "<br>");
+document.write("johnWithAgeAndHeight instanceof PersonWithAge&nbsp;:&nbsp;" + (johnWithAgeAndHeight instanceof PersonWithAge) + "<br>");
+document.write("johnWithAgeAndHeight instanceof PersonWithAgeAndHeight&nbsp;:&nbsp;" + (johnWithAgeAndHeight instanceof PersonWithAgeAndHeight) + "<br>");
+document.write("johnWithAgeAndHeight instanceof PersonMaria&nbsp;:&nbsp;" + (johnWithAgeAndHeight instanceof PersonMaria) + "<br>");
+
+</script>

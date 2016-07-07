@@ -1,0 +1,174 @@
+<script src="class.js"></script>
+<script>
+
+Class("BinTree",function(tl,tr,tdata){
+	this.tl = tl || null;
+	this.tr = tr || null;
+	this.tdata = tdata || null;
+},{
+	"createTree":function(preorder){
+		var t = {},tl = {},tr = {};
+		if(preorder.str[0] == "#") {
+			preorder.str = preorder.str.substr(1);
+			return null;
+		} else {
+			t = new BinTree();
+			t.tdata = preorder.str[0];
+			preorder.str = preorder.str.substr(1);
+			tl = BinTree.prototype.createTree(preorder);
+			t.setLeft(tl);
+			tr = BinTree.prototype.createTree(preorder);
+			t.setRight(tr);
+			return t;
+		}
+	},
+	"setLeft":function(ptr) {
+		this.tl = ptr;
+	},
+	"setRight":function(ptr) {
+		this.tr = ptr;
+	},
+	"getLeft":function(ptr) {
+		return this.tl;
+	},
+	"getRight":function(ptr) {
+		return this.tr;
+	},
+	"getData":function() {
+		return this.tdata;
+	}
+});
+
+BinTree.extend({
+	"getPreOrder":function(obj) {
+		(typeof obj.order == "undefined") ? obj.order = "" : obj;
+		obj.order += this.tdata;
+		var tl = this.getLeft(),tr = this.getRight();
+		tl != null ? tl.getPreOrder(obj) : tl;
+		tr != null ? tr.getPreOrder(obj) : tr;
+		return obj.order;
+	},
+	"getInOrder":function(obj) {
+		(typeof obj.order == "undefined") ? obj.order = "" : obj;
+		var tl = this.getLeft(),tr = this.getRight();
+		tl != null ? tl.getInOrder(obj) : tl;
+		obj.order += this.tdata;
+		tr != null ? tr.getInOrder(obj) : tr;
+		return obj.order;
+	},
+	"getPostOrder":function(obj) {
+		(typeof obj.order == "undefined") ? obj.order = "" : obj;
+		var tl = this.getLeft(),tr = this.getRight();
+		tl != null ? tl.getPostOrder(obj) : tl;
+		tr != null ? tr.getPostOrder(obj) : tr;
+		obj.order += this.tdata;
+		return obj.order;
+	},
+	"getLevelOrder":function(obj) {
+		(typeof obj.nodes == "undefined") ? obj.nodes = [] : obj;
+		var cur = [this];
+		while(cur.length != 0) {
+			obj.nodes = obj.nodes.concat(cur);
+			var _cur = [];
+			for(var i=0;i<cur.length;i++) {
+				var tl = cur[i].getLeft(),tr = cur[i].getRight();
+				tl ? _cur.push(tl) : tl;
+				tr ? _cur.push(tr) : tr;
+			}
+			cur = _cur;
+		}
+		var str = "";
+		obj.nodes.forEach(function(item){
+			str += item.tdata;
+		});
+		return str;
+	},
+	"getLeafSum":function(){
+		var tl = this.getLeft(),tr = this.getRight();
+		if(tl && tr) {
+			return tl.getLeafSum() + tr.getLeafSum();
+		} else if(!tl && !tr) {
+			return 1;
+		} else if (tl) {
+			return tl.getLeafSum();
+		} else {
+			return tr.getLeafSum();
+		}
+	},
+	"getHeight":function() {
+		var tl = this.getLeft(),tr = this.getRight();
+		if(!tl && !tr) {
+			return 1;
+		} else if(tl && tr) {
+			return tl.getHeight() >= tr.getHeight() ? tl.getHeight() + 1 : tr.getHeight() + 1;
+		} else if(tl) {
+			return tl.getHeight() + 1;
+		} else {
+			return tr.getHeight() + 1;
+		}
+	},
+	"swap":function() {
+		var tl = this.getLeft(),tr = this.getRight();
+		this.setLeft(tr);
+		this.setRight(tl);
+		tl != null ? tl.swap() : tl;
+		tr != null ? tr.swap() : tr;
+	},
+	"isInTree":function(tree) {
+		var bool = false;
+		if(this == tree) {
+			return true;
+		} else {
+			var tl = tree.getLeft(),tr = tree.getRight();
+			var tlb = tl != null ? this.isInTree(tl) : false;
+			var trb = tr != null ? this.isInTree(tr) : false;
+			return tlb || trb;
+		}
+	},
+	"getNearestCommonFather":function(flag,node1,node2,tree) {
+		if(flag) {
+			if(node1.isInTree(node2)) {
+				return node2;
+			} else if(node2.isInTree(node1)) {
+				return node1;
+			} else {
+				var tl = tree.getLeft(),tr = tree.getRight();
+				var inLeft = tl && node1.isInTree(tl) && node2.isInTree(tl);
+				var inRight = tr && node1.isInTree(tr) && node2.isInTree(tr);
+				if(!inLeft && !inRight) {
+					return tree;
+				} else if(inLeft){
+					return this.getNearestCommonFather(1,node1,node2,tl);
+				} else {
+					return this.getNearestCommonFather(1,node1,node2,tr);
+				}
+			}
+		} else {
+			if(node1.isInTree(tree) && node2.isInTree(tree)) {
+				return this.getNearestCommonFather(1,node1,node2,tree);
+			} else {
+				return false;
+			}
+		}
+	}
+});
+
+var tree = BinTree.prototype.createTree({"str":"6423####51##7##"});
+console.log(tree.getPreOrder({})); //6423517
+console.log(tree.getInOrder({})); // 3246157
+console.log(tree.getPostOrder({})); // 3241756
+console.log(tree.getLevelOrder({})); // 6452173
+console.log(tree.getLeafSum()); // 3
+console.log(tree.getHeight()); // 4
+tree.swap()
+console.log("½»»»");
+console.log(tree.getPreOrder({})); // 6571423
+console.log(tree.getPostOrder({})); // 7153246
+tree.swap()
+console.log("½»»»");
+console.log(tree.tr.tl.isInTree(tree));// true
+console.log(BinTree.prototype.getNearestCommonFather(0,tree.tr.tl,tree.tr.tr,tree));
+// ¡ü¡ü¡ü tdata = 5
+
+
+</script>
