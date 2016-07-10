@@ -1,0 +1,28 @@
+<script>
+
+function BubbleSort(a,fn) {
+	for(var i=0;i<a.length;i++) {
+		for(var j=0;j<a.length - i;j++) {
+			if(fn(a[j+1],a[j]) == 1) {
+				var temp = a[j+1];
+				a[j+1] = a[j];
+				a[j] = temp;
+			}
+		}
+	}
+}
+
+var t = [1,5,4,2,8,7,5,6,9,3];
+BubbleSort(t,function(item1,item2){
+	if(item1<item2){
+		return 1;
+	}else if(item1 == item2){
+		return 0;
+	}else if(item1 > item2){
+		return -1;
+	}
+});
+console.log("--------------");
+console.log(t);
+
+</script>

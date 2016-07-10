@@ -1,0 +1,56 @@
+<script>
+
+function swap(a,t1,t2) {
+	var temp = a[t1];
+	a[t1] = a[t2];
+	a[t2] = temp;
+}
+
+function quicksort(a,start,end,callback) {
+	var l,r,fn;
+	if(typeof start == "function") {
+		fn = start;
+		start = 0;
+		end = a.length - 1;
+		l = start;
+		r = end + 1;
+	} else {
+		l = start;
+		r = end + 1;
+		fn = callback;
+	}
+	
+	
+	if(l < r) {
+		// console.log(a);
+		do {
+			do{
+				l++;
+			}while((fn(a[l],a[start]) == 1) && l<=end)
+			do{
+				r--;
+			}while((fn(a[r],a[start]) == 0 || fn(a[r],a[start]) == -1) && r>start)
+			if(l<r) {
+				swap(a,l,r);
+			}
+		}while(l<r)
+		swap(a,start,r);
+		quicksort(a,start,r - 1,fn);
+		quicksort(a,r + 1,end,fn);
+	}
+}
+
+var t = [1,5,4,2,8,7,5,6,9,3];
+quicksort(t,function(item1,item2){
+	if(item1<item2){
+		return 1;
+	}else if(item1 == item2){
+		return 0;
+	}else if(item1 > item2){
+		return -1;
+	}
+});
+console.log("-------------------");
+console.log(t);
+
+</script>
